@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="TipsView">
+        <attr name="TipsBackgroundColor" format="color"></attr>
+        <attr name="TipsBtnBackgroundColor" format="color"></attr>
+        <attr name="TipsTextColor" format="color"></attr>
+        <attr name="TipsTextSize" format="dimension"></attr>
+        <attr name="TipsText" format="string"></attr>
+    </declare-styleable>
+</resources>
