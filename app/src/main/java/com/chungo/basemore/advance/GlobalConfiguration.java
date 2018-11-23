@@ -21,18 +21,19 @@ import android.support.v4.app.FragmentManager;
 
 import com.chungo.base.base.delegate.AppLifecycles;
 import com.chungo.base.di.module.GlobalConfigModule;
+import com.chungo.base.http.SSLTrustManager;
 import com.chungo.base.http.imageloader.glide.GlideImageLoaderStrategy;
 import com.chungo.base.http.log.RequestInterceptor;
 import com.chungo.base.integration.ConfigModule;
+import com.chungo.base.progressmanager.ProgressManager;
+import com.chungo.base.retrofiturlmanager.RetrofitUrlManager;
 import com.chungo.baseapp.BuildConfig;
 import com.chungo.basemore.mvp.model.api.Api;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import me.jessyan.progressmanager.ProgressManager;
-import me.jessyan.retrofiturlmanager.RetrofitUrlManager;
-
+import javax.net.ssl.SSLSocketFactory;
 
 /**
  * ================================================
@@ -132,7 +133,13 @@ public final class GlobalConfiguration implements ConfigModule {
 //                    retrofitBuilder.addConverterFactory(FastJsonConverterFactory.create());//比如使用fastjson替代gson
                 })
                 .okhttpConfiguration((context1, okhttpBuilder) -> {//这里可以自己自定义配置Okhttp的参数
-//                    okhttpBuilder.sslSocketFactory(); //支持 Https,详情请百度
+                    try {
+                        SSLTrustManager manager = new SSLTrustManager();
+                        SSLSocketFactory factory = manager.allowAllSSL().getSocketFactory();
+                        okhttpBuilder.sslSocketFactory(factory, manager); //支持 Https,详情请百度
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     okhttpBuilder.writeTimeout(10, TimeUnit.SECONDS);
                     //使用一行代码监听 Retrofit／Okhttp 上传下载进度监听,以及 Glide 加载进度监听 详细使用方法查看 https://github.com/JessYanCoding/ProgressManager
                     ProgressManager.getInstance().with(okhttpBuilder);

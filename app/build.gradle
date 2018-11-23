@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
@@ -17,10 +18,27 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
-        release {
+        debug {
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            buildConfigField "boolean", "USE_CANARY", "true"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+        release {
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            buildConfigField "boolean", "USE_CANARY", "false"
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        disable 'InvalidPackage'
+        disable "ResourceType"
+        abortOnError false
     }
 }
 
@@ -37,6 +55,10 @@ dependencies {
         exclude module: 'support-annotations'
         exclude module: 'support-compat'
     }
+    annotationProcessor(rootProject.ext.dependencies["butterknife-compiler"]) {
+        exclude module: 'support-annotations'
+    }
+
     //rx
     api rootProject.ext.dependencies["rxjava2"]
     api(rootProject.ext.dependencies["rxandroid2"]) {
@@ -64,11 +86,7 @@ dependencies {
         exclude module: 'rxjava'
         exclude module: 'support-annotations'
     }
-    api rootProject.ext.dependencies['rxerrorhandler2']
-    //network
-    implementation rootProject.ext.dependencies["progressmanager"]
-    implementation rootProject.ext.dependencies["retrofit-url-manager"]
-    implementation rootProject.ext.dependencies["lifecyclemodel"]
+
     api rootProject.ext.dependencies["gson"]
     api(rootProject.ext.dependencies["retrofit"]) {
         exclude module: 'okhttp'
@@ -113,7 +131,7 @@ dependencies {
     //现在已经将 Demo 中的屏幕适配框架从 AndroidAutoLayout 替换为 AndroidAutoSize, AndroidAutoLayout 和 AndroidAutoSize 可以在项目中共存
     //所以旧项目只要依赖 arms-autolayout 即可兼容之前的旧页面, 新页面可以使用 AndroidAutoSize 进行适配, 等有时间了再将旧页面全部替换为 AndroidAutoSize
     implementation rootProject.ext.dependencies["autosize"]
-    //test
+    //log
     api rootProject.ext.dependencies["timber"]
     api rootProject.ext.dependencies["logger"]
     //tools
@@ -121,7 +139,11 @@ dependencies {
     api rootProject.ext.dependencies["dagger2"]
     annotationProcessor rootProject.ext.dependencies["dagger2-compiler"]
     compileOnly rootProject.ext.dependencies["eventbus"]
-    debugImplementation rootProject.ext.dependencies["canary-debug"]
-    releaseImplementation rootProject.ext.dependencies["canary-release"]
-    testImplementation rootProject.ext.dependencies["canary-release"]
+    debugImplementation rootProject.ext.dependencies["leakcanary-debug"]
+    releaseImplementation rootProject.ext.dependencies["leakcanary-release"]
+    testImplementation rootProject.ext.dependencies["leakcanary-release"]
+
+
+    //test
+    implementation rootProject.ext.dependencies["paginate"]
 }

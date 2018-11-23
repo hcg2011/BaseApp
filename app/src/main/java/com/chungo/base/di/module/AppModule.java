@@ -21,6 +21,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 
 import com.chungo.base.di.component.AppComponent;
+import com.chungo.base.di.scope.Qualifiers;
 import com.chungo.base.integration.ActivityLifecycle;
 import com.chungo.base.integration.AppManager;
 import com.chungo.base.integration.FragmentLifecycle;
@@ -35,7 +36,6 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Binds;
@@ -73,7 +73,7 @@ public abstract class AppModule {
      */
     @Singleton
     @Provides
-    static AppManager provideAppManager(Application application){
+    static AppManager provideAppManager(Application application) {
         return AppManager.getAppManager().init(application);
     }
 
@@ -87,11 +87,11 @@ public abstract class AppModule {
     }
 
     @Binds
-    @Named("ActivityLifecycle")
+    @Qualifiers.Lifecycle
     abstract Application.ActivityLifecycleCallbacks bindActivityLifecycle(ActivityLifecycle activityLifecycle);
 
     @Binds
-    @Named("ActivityLifecycleForRxLifecycle")
+    @Qualifiers.RxLifecycle
     abstract Application.ActivityLifecycleCallbacks bindActivityLifecycleForRxLifecycle(ActivityLifecycleForRxLifecycle activityLifecycleForRxLifecycle);
 
     @Binds
@@ -99,7 +99,7 @@ public abstract class AppModule {
 
     @Singleton
     @Provides
-    static List<FragmentManager.FragmentLifecycleCallbacks> provideFragmentLifecycles(){
+    static List<FragmentManager.FragmentLifecycleCallbacks> provideFragmentLifecycles() {
         return new ArrayList<>();
     }
 

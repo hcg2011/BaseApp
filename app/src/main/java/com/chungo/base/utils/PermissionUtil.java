@@ -17,6 +17,8 @@ package com.chungo.base.utils;
 
 import android.Manifest;
 
+import com.chungo.base.rxerrorhandler.core.RxErrorHandler;
+import com.chungo.base.rxerrorhandler.handler.ErrorHandleSubscriber;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -24,8 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.annotations.NonNull;
-import me.jessyan.rxerrorhandler.core.RxErrorHandler;
-import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 import timber.log.Timber;
 
 /**

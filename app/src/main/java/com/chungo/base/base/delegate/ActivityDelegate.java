@@ -32,9 +32,6 @@ import android.support.annotation.Nullable;
  * ================================================
  */
 public interface ActivityDelegate {
-    String LAYOUT_LINEARLAYOUT = "LinearLayout";
-    String LAYOUT_FRAMELAYOUT = "FrameLayout";
-    String LAYOUT_RELATIVELAYOUT = "RelativeLayout";
     String ACTIVITY_DELEGATE = "ACTIVITY_DELEGATE";
 
     void onCreate(@Nullable Bundle savedInstanceState);

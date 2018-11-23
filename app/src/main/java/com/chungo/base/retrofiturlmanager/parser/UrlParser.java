@@ -13,20 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.chungo.basemore.advance;
+package com.chungo.base.retrofiturlmanager.parser;
+
+import com.chungo.base.retrofiturlmanager.RetrofitUrlManager;
+
+import okhttp3.HttpUrl;
+import okhttp3.Request;
 
 /**
  * ================================================
- * 放置 AndroidEventBus 的 Tag, 便于检索
- * Arms 核心库现在并不会依赖某个 EventBus, 要想使用 EventBus, 还请在项目中自行依赖对应的 EventBus
- * 现在支持两种 EventBus, greenrobot 的 EventBus 和畅销书 《Android源码设计模式解析与实战》的作者 何红辉 所作的 AndroidEventBus
- *
- * @see <a href="https://github.com/JessYanCoding/MVPArms/wiki#3.5">EventBusTags wiki 官方文档</a>
- * Created by JessYan on 8/30/2016 16:39
+ * Url解析器
+ * <p>
+ * Created by JessYan on 17/07/2017 17:44
  * <a href="mailto:jess.yan.effort@gmail.com">Contact me</a>
  * <a href="https://github.com/JessYanCoding">Follow me</a>
  * ================================================
  */
-public interface EventBusTags {
 
+public interface UrlParser {
+
+    /**
+     * 这里可以做一些初始化操作
+     *
+     * @param retrofitUrlManager {@link RetrofitUrlManager}
+     */
+    void init(RetrofitUrlManager retrofitUrlManager);
+
+    /**
+     * 将 {@link RetrofitUrlManager#mDomainNameHub} 中映射的 URL 解析成完整的{@link HttpUrl}
+     * 用来替换 @{@link Request#url} 达到动态切换 URL
+     *
+     * @param domainUrl 用于替换的 URL 地址
+     * @param url       旧 URL 地址
+     * @return
+     */
+    HttpUrl parseUrl(HttpUrl domainUrl, HttpUrl url);
 }

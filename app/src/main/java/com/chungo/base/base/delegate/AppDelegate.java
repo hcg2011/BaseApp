@@ -30,6 +30,7 @@ import com.chungo.base.base.BaseApplication;
 import com.chungo.base.di.component.AppComponent;
 import com.chungo.base.di.component.DaggerAppComponent;
 import com.chungo.base.di.module.GlobalConfigModule;
+import com.chungo.base.di.scope.Qualifiers;
 import com.chungo.base.integration.ConfigModule;
 import com.chungo.base.integration.ManifestParser;
 import com.chungo.base.integration.cache.IntelligentCache;
@@ -40,7 +41,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 /**
  * ================================================
@@ -60,10 +60,10 @@ public class AppDelegate implements App, AppLifecycles {
     private Application mApplication;
     private AppComponent mAppComponent;
     @Inject
-    @Named("ActivityLifecycle")
+    @Qualifiers.Lifecycle
     protected Application.ActivityLifecycleCallbacks mActivityLifecycle;
     @Inject
-    @Named("ActivityLifecycleForRxLifecycle")
+    @Qualifiers.RxLifecycle
     protected Application.ActivityLifecycleCallbacks mActivityLifecycleForRxLifecycle;
     private List<ConfigModule> mModules;
     private List<AppLifecycles> mAppLifecycles = new ArrayList<>();

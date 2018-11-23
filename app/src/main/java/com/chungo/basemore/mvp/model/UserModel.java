@@ -18,7 +18,6 @@ package com.chungo.basemore.mvp.model;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.OnLifecycleEvent;
 
-import com.chungo.base.di.scope.ActivityScope;
 import com.chungo.base.integration.IRepositoryManager;
 import com.chungo.base.mvp.BaseModel;
 import com.chungo.basemore.mvp.contract.UserContract;
@@ -48,7 +47,6 @@ import timber.log.Timber;
  * <a href="https://github.com/JessYanCoding">Follow me</a>
  * ================================================
  */
-@ActivityScope
 public class UserModel extends BaseModel implements UserContract.Model {
     public static final int USERS_PER_PAGE = 10;
 
@@ -65,15 +63,14 @@ public class UserModel extends BaseModel implements UserContract.Model {
                 .getUsers(lastIdQueried, USERS_PER_PAGE))
                 .flatMap(new Function<Observable<List<User>>, ObservableSource<List<User>>>() {
                     @Override
-                    public ObservableSource<List<User>> apply(@NonNull Observable<List<User>> listObservable) throws Exception {
+                    public ObservableSource<List<User>> apply(Observable<List<User>> listObservable) throws Exception {
                         return mRepositoryManager.obtainCacheService(CommonCache.class)
                                 .getUsers(listObservable
                                         , new DynamicKey(lastIdQueried)
                                         , new EvictDynamicKey(update))
-                                .map(listReply -> listReply.getData());
+                                .map(listReply -> (List<User>) listReply.getData());
                     }
                 });
-
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)

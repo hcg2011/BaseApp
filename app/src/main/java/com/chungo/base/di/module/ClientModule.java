@@ -21,6 +21,8 @@ import android.support.annotation.Nullable;
 
 import com.chungo.base.http.GlobalHttpHandler;
 import com.chungo.base.http.log.RequestInterceptor;
+import com.chungo.base.rxerrorhandler.core.RxErrorHandler;
+import com.chungo.base.rxerrorhandler.handler.listener.ResponseErrorListener;
 import com.chungo.base.utils.DataHelper;
 import com.google.gson.Gson;
 
@@ -38,8 +40,6 @@ import dagger.Module;
 import dagger.Provides;
 import io.rx_cache2.internal.RxCache;
 import io.victoralbertos.jolyglot.GsonSpeaker;
-import me.jessyan.rxerrorhandler.core.RxErrorHandler;
-import me.jessyan.rxerrorhandler.handler.listener.ResponseErrorListener;
 import okhttp3.Dispatcher;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -77,15 +77,13 @@ public abstract class ClientModule {
     @Provides
     static Retrofit provideRetrofit(Application application, @Nullable RetrofitConfiguration configuration, Retrofit.Builder builder, OkHttpClient client
             , HttpUrl httpUrl, Gson gson) {
-        builder
-                .baseUrl(httpUrl)//域名
+        builder.baseUrl(httpUrl)//域名
                 .client(client);//设置okhttp
 
         if (configuration != null)
             configuration.configRetrofit(application, builder);
 
-        builder
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())//使用 Rxjava
+        builder.addCallAdapterFactory(RxJava2CallAdapterFactory.create())//使用 Rxjava
                 .addConverterFactory(GsonConverterFactory.create(gson));//使用 Gson
         return builder.build();
     }
@@ -164,7 +162,8 @@ public abstract class ClientModule {
         if (configuration != null) {
             rxCache = configuration.configRxCache(application, builder);
         }
-        if (rxCache != null) return rxCache;
+        if (rxCache != null)
+            return rxCache;
         return builder
                 .persistence(cacheDirectory, new GsonSpeaker(gson));
     }

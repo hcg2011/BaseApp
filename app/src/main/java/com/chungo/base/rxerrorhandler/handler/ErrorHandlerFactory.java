@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2017 JessYan
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,41 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.chungo.basemore.mvp.ui.adapter;
+package com.chungo.base.rxerrorhandler.handler;
 
-import android.view.View;
+import android.content.Context;
 
-import com.chungo.base.base.BaseHolder;
-import com.chungo.base.base.DefaultAdapter;
-import com.chungo.baseapp.R;
-import com.chungo.basemore.mvp.model.entity.User;
-import com.chungo.basemore.mvp.ui.holder.UserItemHolder;
-
-import java.util.List;
-
+import com.chungo.base.rxerrorhandler.handler.listener.ResponseErrorListener;
 
 /**
  * ================================================
- * 展示 {@link DefaultAdapter} 的用法
- * <p>
- * Created by JessYan on 09/04/2016 12:57
+ * Created by JessYan on 9/2/2016 13:47
  * <a href="mailto:jess.yan.effort@gmail.com">Contact me</a>
  * <a href="https://github.com/JessYanCoding">Follow me</a>
  * ================================================
  */
-public class UserAdapter extends DefaultAdapter<User> {
+public class ErrorHandlerFactory {
+    public final String TAG = this.getClass().getSimpleName();
+    private Context mContext;
+    private ResponseErrorListener mResponseErrorListener;
 
-    public UserAdapter(List<User> infos) {
-        super(infos);
+    public ErrorHandlerFactory(Context mContext, ResponseErrorListener mResponseErrorListener) {
+        this.mResponseErrorListener = mResponseErrorListener;
+        this.mContext = mContext;
     }
 
-    @Override
-    public BaseHolder<User> getHolder(View v, int viewType) {
-        return new UserItemHolder(v);
-    }
-
-    @Override
-    public int getLayoutId(int viewType) {
-        return R.layout.recycle_list;
+    /**
+     *  处理错误
+     * @param throwable
+     */
+    public void handleError(Throwable throwable) {
+        mResponseErrorListener.handleResponseError(mContext, throwable);
     }
 }

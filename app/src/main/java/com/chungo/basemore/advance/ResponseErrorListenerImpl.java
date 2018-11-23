@@ -18,6 +18,7 @@ package com.chungo.basemore.advance;
 import android.content.Context;
 import android.net.ParseException;
 
+import com.chungo.base.rxerrorhandler.handler.listener.ResponseErrorListener;
 import com.chungo.base.utils.ArmsUtils;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonParseException;
@@ -27,7 +28,6 @@ import org.json.JSONException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
-import me.jessyan.rxerrorhandler.handler.listener.ResponseErrorListener;
 import retrofit2.HttpException;
 import timber.log.Timber;
 

@@ -19,11 +19,11 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.chungo.base.di.scope.ActivityScope;
+import com.chungo.base.di.scope.Scopes;
 import com.chungo.basemore.mvp.contract.UserContract;
 import com.chungo.basemore.mvp.model.UserModel;
 import com.chungo.basemore.mvp.model.entity.User;
-import com.chungo.basemore.mvp.ui.adapter.UserAdapter;
+import com.chungo.baseapp.adapter.UserAdapter;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.ArrayList;
@@ -46,30 +46,31 @@ import dagger.Provides;
 @Module
 public abstract class UserModule {
 
+    @Scopes.Activity
     @Binds
     abstract UserContract.Model bindUserModel(UserModel model);
 
-    @ActivityScope
+    @Scopes.Activity
     @Provides
     static RxPermissions provideRxPermissions(UserContract.View view) {
         return new RxPermissions((FragmentActivity) view.getActivity());
     }
 
-    @ActivityScope
+    @Scopes.Activity
     @Provides
     static RecyclerView.LayoutManager provideLayoutManager(UserContract.View view) {
         return new GridLayoutManager(view.getActivity(), 2);
     }
 
-    @ActivityScope
+    @Scopes.Activity
     @Provides
     static List<User> provideUserList() {
         return new ArrayList<>();
     }
 
-    @ActivityScope
+    @Scopes.Activity
     @Provides
-    static RecyclerView.Adapter provideUserAdapter(List<User> list){
+    static RecyclerView.Adapter provideUserAdapter(List<User> list) {
         return new UserAdapter(list);
     }
 }

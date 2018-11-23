@@ -22,9 +22,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.SupportActivity;
 import android.support.v7.widget.RecyclerView;
 
-import com.chungo.base.di.scope.ActivityScope;
+import com.chungo.base.di.scope.Scopes;
 import com.chungo.base.integration.AppManager;
 import com.chungo.base.mvp.BasePresenter;
+import com.chungo.base.rxerrorhandler.core.RxErrorHandler;
+import com.chungo.base.rxerrorhandler.handler.ErrorHandleSubscriber;
+import com.chungo.base.rxerrorhandler.handler.RetryWithDelay;
 import com.chungo.base.utils.PermissionUtil;
 import com.chungo.base.utils.RxLifecycleUtils;
 import com.chungo.basemore.mvp.contract.UserContract;
@@ -35,10 +38,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import me.jessyan.rxerrorhandler.core.RxErrorHandler;
-import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
-import me.jessyan.rxerrorhandler.handler.RetryWithDelay;
 
 
 /**
@@ -51,7 +52,7 @@ import me.jessyan.rxerrorhandler.handler.RetryWithDelay;
  * <a href="https://github.com/JessYanCoding">Follow me</a>
  * ================================================
  */
-@ActivityScope
+@Scopes.Activity
 public class UserPresenter extends BasePresenter<UserContract.Model, UserContract.View> {
     @Inject
     RxErrorHandler mErrorHandler;
@@ -106,7 +107,8 @@ public class UserPresenter extends BasePresenter<UserContract.Model, UserContrac
     }
 
     private void requestFromModel(boolean pullToRefresh) {
-        if (pullToRefresh) lastUserId = 1;//下拉刷新默认只请求第一页
+        if (pullToRefresh)
+            lastUserId = 1;//下拉刷新默认只请求第一页
 
         //关于RxCache缓存库的使用请参考 http://www.jianshu.com/p/b58ef6b0624b
 
@@ -117,7 +119,7 @@ public class UserPresenter extends BasePresenter<UserContract.Model, UserContrac
             isEvictCache = false;
         }
 
-        mModel.getUsers(lastUserId, isEvictCache)
+        Disposable disposables = mModel.getUsers(lastUserId, isEvictCache)
                 .subscribeOn(Schedulers.io())
                 .retryWhen(new RetryWithDelay(3, 2))//遇到错误时重试,第一个参数为重试几次,第二个参数为重试的间隔
                 .doOnSubscribe(disposable -> {
@@ -147,6 +149,8 @@ public class UserPresenter extends BasePresenter<UserContract.Model, UserContrac
                             mAdapter.notifyItemRangeInserted(preEndIndex, users.size());
                     }
                 });
+
+        addDispose(disposables);
     }
 
 

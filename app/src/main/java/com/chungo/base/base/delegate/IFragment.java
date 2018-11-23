@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.chungo.base.base.BaseFragment;
 import com.chungo.base.di.component.AppComponent;
 import com.chungo.base.integration.cache.Cache;
 

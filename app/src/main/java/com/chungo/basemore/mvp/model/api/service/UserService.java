@@ -15,10 +15,12 @@
  */
 package com.chungo.basemore.mvp.model.api.service;
 
+
+import com.chungo.basemore.mvp.model.entity.User;
+
 import java.util.List;
 
 import io.reactivex.Observable;
-import me.jessyan.mvparms.demo.mvp.model.entity.User;
 import retrofit2.Retrofit;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;

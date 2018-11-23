@@ -21,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import com.chungo.baseapp.R;
 
@@ -61,14 +62,14 @@ public class ActivityLifecycleCallbacksImpl implements Application.ActivityLifec
                     }
                 }
             }
-//            if (activity.findViewById(R.id.toolbar_title) != null) {
-//                ((TextView) activity.findViewById(R.id.toolbar_title)).setText(activity.getTitle());
-//            }
-//            if (activity.findViewById(R.id.toolbar_back) != null) {
-//                activity.findViewById(R.id.toolbar_back).setOnClickListener(v -> {
-//                    activity.onBackPressed();
-//                });
-//            }
+            if (activity.findViewById(R.id.toolbar_title) != null) {
+                ((TextView) activity.findViewById(R.id.toolbar_title)).setText(activity.getTitle());
+            }
+            if (activity.findViewById(R.id.toolbar_back) != null) {
+                activity.findViewById(R.id.toolbar_back).setOnClickListener(v -> {
+                    activity.onBackPressed();
+                });
+            }
         }
     }
 

@@ -13,21 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.chungo.base.di.scope;
+package com.chungo.base.retrofiturlmanager;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-
-import javax.inject.Scope;
-
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import android.text.TextUtils;
 
 /**
- * A scoping annotation to permit objects whose lifetime should
- * conform to the life of the fragment to be memorized in the
- * correct component.
+ * ================================================
+ * Url 无效的异常
+ * <p>
+ * Created by JessYan on 2017/7/24.
+ * <a href="mailto:jess.yan.effort@gmail.com">Contact me</a>
+ * <a href="https://github.com/JessYanCoding">Follow me</a>
+ * ================================================
  */
-@Scope
-@Documented
-@Retention(RUNTIME)
-public @interface FragmentScope {}
+public class InvalidUrlException extends RuntimeException {
+
+    public InvalidUrlException(String url) {
+        super("You've configured an invalid url : " + (TextUtils.isEmpty(url) ? "EMPTY_OR_NULL_URL" : url));
+    }
+}

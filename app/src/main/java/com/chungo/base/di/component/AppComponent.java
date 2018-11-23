@@ -29,6 +29,7 @@ import com.chungo.base.integration.AppManager;
 import com.chungo.base.integration.ConfigModule;
 import com.chungo.base.integration.IRepositoryManager;
 import com.chungo.base.integration.cache.Cache;
+import com.chungo.base.rxerrorhandler.core.RxErrorHandler;
 import com.chungo.base.utils.ArmsUtils;
 import com.google.gson.Gson;
 
@@ -39,7 +40,6 @@ import javax.inject.Singleton;
 
 import dagger.BindsInstance;
 import dagger.Component;
-import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import okhttp3.OkHttpClient;
 
 /**

@@ -19,7 +19,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.prize.dagger2_demo.R;
+import com.chungo.baseapp.R;
 import com.scwang.smartrefresh.layout.util.DensityUtil;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;

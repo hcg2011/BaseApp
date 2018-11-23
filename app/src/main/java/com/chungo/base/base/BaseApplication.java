@@ -22,6 +22,7 @@ import android.support.annotation.NonNull;
 import com.chungo.base.base.delegate.AppDelegate;
 import com.chungo.base.base.delegate.AppLifecycles;
 import com.chungo.base.di.component.AppComponent;
+import com.chungo.base.utils.ArmsUtils;
 import com.chungo.base.utils.Preconditions;
 
 

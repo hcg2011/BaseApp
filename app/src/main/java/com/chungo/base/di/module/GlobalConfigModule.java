@@ -31,6 +31,7 @@ import com.chungo.base.integration.cache.Cache;
 import com.chungo.base.integration.cache.CacheType;
 import com.chungo.base.integration.cache.IntelligentCache;
 import com.chungo.base.integration.cache.LruCache;
+import com.chungo.base.rxerrorhandler.handler.listener.ResponseErrorListener;
 import com.chungo.base.utils.DataHelper;
 import com.chungo.base.utils.Preconditions;
 
@@ -47,7 +48,6 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import me.jessyan.rxerrorhandler.handler.listener.ResponseErrorListener;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.internal.Util;

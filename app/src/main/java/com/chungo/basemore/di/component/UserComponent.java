@@ -17,10 +17,10 @@ package com.chungo.basemore.di.component;
 
 
 import com.chungo.base.di.component.AppComponent;
-import com.chungo.base.di.scope.ActivityScope;
+import com.chungo.base.di.scope.Scopes;
+import com.chungo.baseapp.MainActivity;
 import com.chungo.basemore.di.module.UserModule;
 import com.chungo.basemore.mvp.contract.UserContract;
-import com.chungo.basemore.mvp.ui.activity.UserActivity;
 
 import dagger.BindsInstance;
 import dagger.Component;
@@ -35,13 +35,14 @@ import dagger.Component;
  * <a href="https://github.com/JessYanCoding">Follow me</a>
  * ================================================
  */
-@ActivityScope
+@Scopes.Activity
 @Component(modules = UserModule.class, dependencies = AppComponent.class)
 public interface UserComponent {
-    void inject(UserActivity activity);
+    void inject(MainActivity activity);
 
     @Component.Builder
     interface Builder {
+
         @BindsInstance
         UserComponent.Builder view(UserContract.View view);
 
