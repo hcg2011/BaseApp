@@ -36,19 +36,10 @@ import java.util.concurrent.TimeUnit;
 import javax.net.ssl.SSLSocketFactory;
 
 /**
- * ================================================
  * App 的全局配置信息在此配置, 需要将此实现类声明到 AndroidManifest 中
  * ConfigModule 的实现类可以有无数多个, 在 Application 中只是注册回调, 并不会影响性能 (多个 ConfigModule 在多 Module 环境下尤为受用)
  * 不过要注意 ConfigModule 接口的实现类对象是通过反射生成的, 这里会有些性能损耗
  *
- * @see <a href="https://github.com/JessYanCoding/MVPArms/wiki">请配合官方 Wiki 文档学习本框架</a>
- * @see <a href="https://github.com/JessYanCoding/MVPArms/wiki/UpdateLog">更新日志, 升级必看!</a>
- * @see <a href="https://github.com/JessYanCoding/MVPArms/wiki/Issues">常见 Issues, 踩坑必看!</a>
- * @see <a href="https://github.com/JessYanCoding/ArmsComponent/wiki">MVPArms 官方组件化方案 ArmsComponent, 进阶指南!</a>
- * Created by JessYan on 12/04/2017 17:25
- * <a href="mailto:jess.yan.effort@gmail.com">Contact me</a>
- * <a href="https://github.com/JessYanCoding">Follow me</a>
- * ================================================
  */
 public final class GlobalConfiguration implements ConfigModule {
 //    public static String sDomain = Api.APP_DOMAIN;

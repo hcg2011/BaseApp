@@ -164,8 +164,7 @@ public abstract class ClientModule {
         }
         if (rxCache != null)
             return rxCache;
-        return builder
-                .persistence(cacheDirectory, new GsonSpeaker(gson));
+        return builder.persistence(cacheDirectory, new GsonSpeaker(gson));
     }
 
     /**
