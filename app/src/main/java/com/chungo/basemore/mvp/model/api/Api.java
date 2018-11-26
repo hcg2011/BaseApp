@@ -27,4 +27,8 @@ package com.chungo.basemore.mvp.model.api;
 public interface Api {
     String APP_DOMAIN = "https://api.github.com";
     String RequestSuccess = "0";
+    //切换url
+    String HEADER_DOMAIN_KEY_BASE = "header_key";
+    String HEADER_DOMAIN_KEY = HEADER_DOMAIN_KEY_BASE + ":";
+
 }

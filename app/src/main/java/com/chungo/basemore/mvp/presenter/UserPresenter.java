@@ -38,7 +38,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -119,7 +118,7 @@ public class UserPresenter extends BasePresenter<UserContract.Model, UserContrac
             isEvictCache = false;
         }
 
-        Disposable disposables = mModel.getUsers(lastUserId, isEvictCache)
+         mModel.getUsers(lastUserId, isEvictCache)
                 .subscribeOn(Schedulers.io())
                 .retryWhen(new RetryWithDelay(3, 2))//遇到错误时重试,第一个参数为重试几次,第二个参数为重试的间隔
                 .doOnSubscribe(disposable -> {
@@ -150,7 +149,7 @@ public class UserPresenter extends BasePresenter<UserContract.Model, UserContrac
                     }
                 });
 
-        addDispose(disposables);
+       // addDispose(disposables);
     }
 
 

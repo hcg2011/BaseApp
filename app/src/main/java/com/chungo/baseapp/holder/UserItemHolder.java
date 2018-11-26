@@ -46,8 +46,7 @@ public class UserItemHolder extends BaseHolder<User> {
 
     @BindView(R.id.iv_avatar)
     ImageView mAvatar;
-    @BindView(R.id.tv_name
- )
+    @BindView(R.id.tv_name)
     TextView mName;
     private AppComponent mAppComponent;
     private ImageLoader mImageLoader;//用于加载图片的管理类,默认使用 Glide,使用策略模式,可替换框架
