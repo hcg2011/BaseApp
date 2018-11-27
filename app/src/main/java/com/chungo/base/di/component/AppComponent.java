@@ -56,6 +56,9 @@ import okhttp3.OkHttpClient;
 @Singleton
 @Component(modules = {AppModule.class, ClientModule.class, GlobalConfigModule.class})
 public interface AppComponent {
+
+    void inject(AppDelegate delegate);
+
     Application application();
 
     /**
@@ -137,8 +140,6 @@ public interface AppComponent {
      * @return {@link ExecutorService}
      */
     ExecutorService executorService();
-
-    void inject(AppDelegate delegate);
 
     @Component.Builder
     interface Builder {
