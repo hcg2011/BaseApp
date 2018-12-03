@@ -11,26 +11,31 @@ import java.io.RandomAccessFile;
  * 统一添加Licenses信息
  */
 public class JavaLicenses {
-
-    public static final String LICENSE_PATH = "app/license.txt";
-    public static final String LICENSE_TARGETS = "app/src/main/java/com/chugno/base/test";
+    public static final String INDEX_START = "/*";
+    public static final String INDEX_CONTENT = " *";
+    public static final String INDEX_END = "*/";
+    public static final String INDEX_CLASS = "package";
+    public static final String INDEX_IMPORT = "import";
     static String licenseStr = "";
+
+    private static final String LICENSE_PATH = "G:/workSpace/BaseApp/app/src/main/java/com/chungo/base/licenses/license.txt";
+    private static final String LICENSE_TARGETS = "G:\\workSpace\\BaseApp\\app\\src\\main\\java\\com\\chungo\\base\\test";
+
 
     public static void main(String[] args) {
 
         try {
             File license = new File(LICENSE_PATH);
-            readLicenses(license);
+            readLicenses(licenseStr, license);
         } catch (Exception e) {
             System.out.println(e.toString());
         }
-
         File f = new File(LICENSE_TARGETS);
         System.out.println(f.getAbsolutePath());
-        print(f);
+        performAddLicenses(f);
     }
 
-    private static void readLicenses(File license) throws IOException {
+    private static void readLicenses(String licenseStr, File license) throws IOException {
         InputStreamReader read = new InputStreamReader(new FileInputStream(license), "utf-8");
         BufferedReader bufferedReader = new BufferedReader(read);
         String lineTxt = "";
@@ -40,7 +45,7 @@ public class JavaLicenses {
         read.close();
     }
 
-    public static void print(File f) {
+    public static void performAddLicenses(File f) {
 
         if (f != null) {
             if (f.isDirectory()) {
@@ -48,9 +53,8 @@ public class JavaLicenses {
                 if (fileArray != null) {
                     for (int i = 0; i < fileArray.length; i++) {
                         File file = fileArray[i];
-
                         if (file.isDirectory()) {
-                            print(file);
+                            performAddLicenses(file);
                         } else {
                             addLicense(0, licenseStr, file);
                         }
@@ -64,8 +68,7 @@ public class JavaLicenses {
 
     public static void addLicense(long skip, String str, File file) {
         try {
-
-            if (removeOldLicenses(file))
+            if (cheackLicenses(file))
                 return;
             if (writeLicense(skip, str, file))
                 return;
@@ -105,29 +108,108 @@ public class JavaLicenses {
     }
 
     /**
-     * 这里还有点问题
+     * 批量删除license
      *
-     * @param file
-     * @return
-     * @throws IOException
+     * @param f
      */
-    private static boolean removeOldLicenses(File file) throws IOException {
+    public static void performRemoveLicenses(File f) {
+
+        if (f != null) {
+            if (f.isDirectory()) {
+                File[] fileArray = f.listFiles();
+                if (fileArray != null) {
+                    for (int i = 0; i < fileArray.length; i++) {
+                        File file = fileArray[i];
+
+                        if (file.isDirectory()) {
+                            performAddLicenses(file);
+                        } else {
+                            try {
+                                removeLicense(file);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            } else {
+                try {
+                    removeLicense(f);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private static boolean removeLicense(File file) throws Exception {
+        RandomAccessFile raf;
+        RandomAccessFile temp;
+        String license = obtainLicenses(file);
+        if (license == null || license.length() <= 0)
+            return false;
+        File cacheFile = new File(file.getAbsolutePath() + ".temp");
+        raf = new RandomAccessFile(file, "rw");//整个文件
+        temp = new RandomAccessFile(cacheFile, "rw");//整个文件
+
+        byte[] b = license.getBytes();//获得文件的大小
+        temp.setLength(raf.length() - b.length);
+
+        for (long i = b.length; i < raf.length(); i++) {//获得内容
+            raf.seek(i);
+            byte cache = raf.readByte();
+            temp.writeByte(cache);
+        }
+        raf.close();
+        temp.close();
+        file.delete();
+        cacheFile.renameTo(file);
+        return true;
+    }
+
+    private static String obtainLicenses(File file) throws IOException {
+        String licenses = "";
         String lineTxt = "";
         try {
             InputStreamReader read = new InputStreamReader(new FileInputStream(file), "utf-8");
             BufferedReader bufferedReader = new BufferedReader(read);
-            lineTxt = "";
             while ((lineTxt = bufferedReader.readLine()) != null) {
-                if (!lineTxt.startsWith("/*") || lineTxt.startsWith("package"))
+                if (lineTxt.startsWith(INDEX_CLASS)
+                        || lineTxt.startsWith(INDEX_IMPORT))
                     break;
+                if (lineTxt.startsWith(INDEX_START)
+                        || lineTxt.startsWith(INDEX_CONTENT)
+                        || lineTxt.startsWith(INDEX_END))
+                    licenses += lineTxt + "\n";
+            }
+            read.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return licenses;
+    }
 
-                licenseStr += lineTxt + "\n";
+    /**
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    private static boolean cheackLicenses(File file) throws IOException {
+        String lineTxt = "";
+        try {
+            InputStreamReader read = new InputStreamReader(new FileInputStream(file), "utf-8");
+            BufferedReader bufferedReader = new BufferedReader(read);
+            while ((lineTxt = bufferedReader.readLine()) != null) {
+                if (lineTxt.startsWith("/*"))
+                    return true;
+                else
+                    break;
             }
             read.close();
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
-        return true;
+        return false;
     }
 }
